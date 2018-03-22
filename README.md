@@ -6,7 +6,7 @@
  
 * A lot of duplicate ids in the core templates that are being loaded in the payment step. We use default templates (license agreement, billing address data)  that are using fixed ids inside the different components, this is causing errors in the console log. The IDs should be unique or do not use any ids but classes.
 
-** Question: What should be changed in core to allow that?
+    * Question: What should be changed in core to allow that?
  
 * we need to extend the Adapter because it is missing the updateBillingAgreementStatus method.
  
