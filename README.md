@@ -2,11 +2,11 @@
 
 ## Improvements
 
-* Allow Brasilizan credit cards as a payment methods
+* [magento/payment-improvements#1](https://github.com/magento/payment-improvements/issues/1) <- Allow Brasilizan credit cards as a payment methods
 
 * Payment is now using the facade pattern what is very cool. Only the assignData should have implemented a command rather then an observer. Now you need to create an observer to just pass data from front-end to the payment information. Basically this is just a copy past method so maybe this can be done already automatically.
  
-* A lot of duplicate ids in the core templates that are being loaded in the payment step. We use default templates (license agreement, billing address data)  that are using fixed ids inside the different components, this is causing errors in the console log. The IDs should be unique or do not use any ids but classes.
+* [magento/payment-improvements#2](https://github.com/magento/payment-improvements/issues/1) A lot of duplicate ids in the core templates that are being loaded in the payment step. We use default templates (license agreement, billing address data)  that are using fixed ids inside the different components, this is causing errors in the console log. The IDs should be unique or do not use any ids but classes.
 
     * Question: What should be changed in core to allow that?
  
