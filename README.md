@@ -1,28 +1,16 @@
-# Repository dedicated to Payment Improvements
+# Payment Improvements
 
-## Improvements
+This is a repository of the Payment Improvements project driven by Magento Community and coordinated by Magento Community Engineering team.
 
-* [magento/payment-improvements#1](https://github.com/magento/payment-improvements/issues/1) <- Allow Brasilizan credit cards as a payment methods
+**Goal:** Continous improvements of Magento Payments functionality.
 
-* Payment is now using the facade pattern what is very cool. Only the assignData should have implemented a command rather then an observer. Now you need to create an observer to just pass data from front-end to the payment information. Basically this is just a copy past method so maybe this can be done already automatically.
- 
-* [magento/payment-improvements#2](https://github.com/magento/payment-improvements/issues/1) <- A lot of duplicate ids in the core templates that are being loaded in the payment step. We use default templates (license agreement, billing address data)  that are using fixed ids inside the different components, this is causing errors in the console log. The IDs should be unique or do not use any ids but classes.
+**Slack:** https://magentocommeng.slack.com/messages/C8MSFSK1N (request access by mail to engcom@magento.com if not registered yet)
 
-    * Question: What should be changed in core to allow that?
-    * Answer: IDs should be replaced with `class` or `data-role` if not critical bacward incompatible change
- 
-* we need to extend the Adapter because it is missing the updateBillingAgreementStatus method.
- 
-* Make it easier to redirect to external page for alternative payment methods without the need to change core code for order placement.
- 
-* Orders that do not complete on the payment page are remain open orders in magento. Is there an solution to this ?
+**Release strategy:** This project has no final goal and release date. Each improvement will be merged back to Magento Opensource once it is finished. All improvements must be shipped to next Magento 2.x release branch (as for today - `2.3-develop`). If improvement does not introduces backward incompatible change it may be backported to previous release line developemnt branches (as for today - `2.2-develop` and `2.1-develop`).
 
-* Braintree and other module replace the getting qoute from session to quote_id_mask 
-	example : Magento\Braintree\Controller\Paypal\PlaceOrde
-  
-* Add fee to payment module, some time merchant wants customer to pay fee for using payment method, some modules provides this functionality. 
+**Commiting changes:** It is highly encouraged for this project to create feature branches inside this repo. Any contributor should be able to do that.
 
-* To method canUseForCurrency() of intereface Magento\Payment\Model\MethodInterface add additional param 
-
-
-## MFTF tests coverage
+**How to add an issue to backlog:**
+Simple create new GitHub issue or start discussion at #payments-improvement Community Engineering Slack channel. In this project distinguished two types of issues. Eeach type marked with correposnding label:
+- `todo` - issue that contains description of a bug to fix or an improvemnt that may taken in implementation.
+- `discussion` - describes developers pain point and and registered to disccuss it and discover appropriate solution.
