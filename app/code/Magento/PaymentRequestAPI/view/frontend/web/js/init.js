@@ -4,6 +4,8 @@
  */
 
 define([], function () {
+    'use strict';
+
     if(!window.PaymentRequest) {
         alert('Payment Request API is not supported.');
     }
@@ -44,10 +46,5 @@ define([], function () {
         }
     };
 
-    var paymentRequest = new PaymentRequest(supportedPaymentMethods, paymentDetails);
-    try {
-        paymentRequest.show();
-    } catch (e) {
-        console.log(e);
-    }
+    return new PaymentRequest(supportedPaymentMethods, paymentDetails);
 });
