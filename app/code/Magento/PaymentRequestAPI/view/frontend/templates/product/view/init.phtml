@@ -4,12 +4,21 @@
  * See COPYING.txt for license details.
  */
 ?>
-
-<script type="text/x-magento-init">
-    {
-        "*": {
-            "Magento_PaymentRequestAPI/js/product/pay-now": {}
-        }
-    }
+<script>
+    require([
+        'uiLayout',
+        'jquery'
+    ], function (layout, $) {
+        $(function () {
+            layout([
+                {
+                    component: 'Magento_PaymentRequestAPI/js/product/pay-now',
+                    name: 'payment_request_pay_now'
+                }
+            ]);
+        })
+    })
 </script>
- ko template: getTemplate() --><!-- /ko
+<div data-bind="scope: 'payment_request_pay_now'">
+    <!-- ko template: getTemplate() --><!-- /ko -->
+</div>
