@@ -15,7 +15,7 @@ define([
         },
 
         buyNow: function () {
-            PaymentRequest.show()
+            PaymentRequest().show()
                 .then(function (paymentResponse) {
                     console.log(paymentResponse);
                     /**
@@ -24,7 +24,16 @@ define([
                     return paymentResponse.complete('fail');
                 })
                 .catch(function (error) {
-                    console.error(error);
+                    switch (error.name) {
+                        case 'AbortError':
+                            console.log('Payment Request dialog was closed by user: ' + error.message);
+                            break;
+                        case 'InvalidStateError':
+                            console.error('Invalid Payment Request state: ' + error.message);
+                            break;
+                        default:
+                            console.error(error)
+                    }
                 });
         }
     });

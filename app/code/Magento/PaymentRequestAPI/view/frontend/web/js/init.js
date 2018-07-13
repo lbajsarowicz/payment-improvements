@@ -46,5 +46,7 @@ define([], function () {
         }
     };
 
-    return new PaymentRequest(supportedPaymentMethods, paymentDetails);
+    return function () {
+        return new PaymentRequest(supportedPaymentMethods, paymentDetails);
+    }
 });
