@@ -4,8 +4,9 @@
  */
 define([
     'jquery',
-    'uiComponent'
-], function ($, Component) {
+    'uiComponent',
+    'Magento_PaymentRequestAPI/js/init'
+], function ($, Component, PaymentRequest) {
     'use strict';
 
     return Component.extend({
@@ -14,7 +15,17 @@ define([
         },
 
         buyNow: function () {
-            alert('Pay');
+            PaymentRequest.show()
+                .then(function (paymentResponse) {
+                    console.log(paymentResponse);
+                    /**
+                     * @TODO return fail for testing purposes
+                     */
+                    return paymentResponse.complete('fail');
+                })
+                .catch(function (error) {
+                    console.error(error);
+                });
         }
     });
 });
