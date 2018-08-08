@@ -18,6 +18,17 @@ namespace Magento\PaymentRequestApi\Api\Data;
 interface PaymentShippingOptionInterface
 {
     /**
+     * @param string $id
+     * @return void
+     */
+    public function setId(string $id): void;
+
+    /**
+     * @return string
+     */
+    public function getId(): string;
+
+    /**
      * @param string $label
      * @return void
      */
