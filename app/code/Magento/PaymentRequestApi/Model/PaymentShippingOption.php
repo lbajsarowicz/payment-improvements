@@ -7,21 +7,21 @@ declare(strict_types=1);
 
 namespace Magento\PaymentRequestApi\Model;
 
+use Magento\Framework\DataObject;
 use Magento\PaymentRequestApi\Api\Data\PaymentCurrencyAmountInterface;
 use Magento\PaymentRequestApi\Api\Data\PaymentShippingOptionInterface;
 
 /**
  * @inheritdoc
  */
-class PaymentShippingOption implements PaymentShippingOptionInterface
+class PaymentShippingOption extends DataObject implements PaymentShippingOptionInterface
 {
-
     /**
      * @inheritdoc
      */
     public function setId(string $id): void
     {
-        // TODO: Implement setId() method.
+        $this->setData(self::ID, $id);
     }
 
     /**
@@ -29,7 +29,7 @@ class PaymentShippingOption implements PaymentShippingOptionInterface
      */
     public function getId(): string
     {
-        // TODO: Implement getId() method.
+        return $this->getData(self::ID);
     }
 
     /**
@@ -37,7 +37,7 @@ class PaymentShippingOption implements PaymentShippingOptionInterface
      */
     public function setLabel(string $label): void
     {
-        // TODO: Implement setLabel() method.
+        $this->setData(self::LABEL, $label);
     }
 
     /**
@@ -45,7 +45,7 @@ class PaymentShippingOption implements PaymentShippingOptionInterface
      */
     public function getLabel(): string
     {
-        // TODO: Implement getLabel() method.
+        return $this->getData(self::LABEL);
     }
 
     /**
@@ -53,7 +53,7 @@ class PaymentShippingOption implements PaymentShippingOptionInterface
      */
     public function setAmount(PaymentCurrencyAmountInterface $amount): void
     {
-        // TODO: Implement setAmount() method.
+        $this->setData(self::AMOUNT, $amount);
     }
 
     /**
@@ -61,6 +61,6 @@ class PaymentShippingOption implements PaymentShippingOptionInterface
      */
     public function getAmount(): PaymentCurrencyAmountInterface
     {
-        // TODO: Implement getAmount() method.
+        return $this->getData(self::AMOUNT);
     }
 }

@@ -8,12 +8,13 @@ declare(strict_types=1);
 namespace Magento\PaymentRequestApi\Model;
 
 
+use Magento\Framework\DataObject;
 use Magento\PaymentRequestApi\Api\Data\PaymentCurrencyAmountInterface;
 
 /**
  * @inheritdoc
  */
-class PaymentCurrencyAmount implements PaymentCurrencyAmountInterface
+class PaymentCurrencyAmount extends DataObject implements PaymentCurrencyAmountInterface
 {
 
     /**
@@ -21,7 +22,7 @@ class PaymentCurrencyAmount implements PaymentCurrencyAmountInterface
      */
     public function getCurrency(): string
     {
-        // TODO: Implement getCurrency() method.
+        return $this->getData(self::CURRENCY);
     }
 
     /**
@@ -29,7 +30,7 @@ class PaymentCurrencyAmount implements PaymentCurrencyAmountInterface
      */
     public function setCurrency(string $currency): void
     {
-        // TODO: Implement setCurrency() method.
+        $this->setData(self::CURRENCY, $currency);
     }
 
     /**
@@ -37,7 +38,7 @@ class PaymentCurrencyAmount implements PaymentCurrencyAmountInterface
      */
     public function setValue(string $value): void
     {
-        // TODO: Implement setValue() method.
+        $this->setData(self::VALUE, $value);
     }
 
     /**
@@ -45,6 +46,6 @@ class PaymentCurrencyAmount implements PaymentCurrencyAmountInterface
      */
     public function getValue(): string
     {
-        // TODO: Implement getValue() method.
+        return $this->getData(self::VALUE);
     }
 }

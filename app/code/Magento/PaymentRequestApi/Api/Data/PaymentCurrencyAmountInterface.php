@@ -17,6 +17,12 @@ namespace Magento\PaymentRequestApi\Api\Data;
  */
 interface PaymentCurrencyAmountInterface
 {
+    /**
+     * Constants for keys of data array. Identical to the name of the getter in snake case
+     */
+    public const CURRENCY = 'currency';
+    public const VALUE = 'value';
+    /**#@-*/
 
     /**
      * @return string

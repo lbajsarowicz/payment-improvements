@@ -18,6 +18,14 @@ namespace Magento\PaymentRequestApi\Api\Data;
 interface PaymentShippingOptionInterface
 {
     /**
+     * Constants for keys of data array. Identical to the name of the getter in snake case
+     */
+    public const ID = 'id';
+    public const LABEL = 'label';
+    public const  AMOUNT = ' amount';
+    /**#@-*/
+
+    /**
      * @param string $id
      * @return void
      */

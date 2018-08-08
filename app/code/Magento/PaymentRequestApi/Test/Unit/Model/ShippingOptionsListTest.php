@@ -33,5 +33,4 @@ class ShippingOptionsListTest extends TestCase
 
         $this->shippingOptionsList->get($this->addressMock);
     }
-
 }
