@@ -9,31 +9,27 @@ namespace Magento\PaymentRequestApi\Model;
 
 use Magento\Framework\Api\CustomAttributesDataInterface;
 use Magento\Framework\DataObject;
+use Magento\Framework\Model\AbstractExtensibleModel;
 use Magento\PaymentRequestApi\Api\Data\AddressInterface;
 
 /**
  * @inheritdoc
  */
-class Address implements AddressInterface
+class Address extends AbstractExtensibleModel implements AddressInterface
 {
     /**
-     * @var string
-     */
-    private $country;
-
-    /**
-     * @return  string
+     * @inheritdoc
      */
     public function getCountry(): string
     {
-
+        return $this->getData(self::COUNTRY);
     }
 
     /**
-     * @param string $country
+     * @inheritdoc
      */
     public function setCountry(string $country): void
     {
-
+        $this->setData(self::COUNTRY, $country);
     }
 }

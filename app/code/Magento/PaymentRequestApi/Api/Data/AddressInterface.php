@@ -7,13 +7,18 @@ declare(strict_types=1);
 
 namespace Magento\PaymentRequestApi\Api\Data;
 
+use Magento\Framework\Api\ExtensibleDataInterface;
 /**
  * Test
  * @api
  */
-interface AddressInterface
+interface AddressInterface extends ExtensibleDataInterface
 {
-    const COUNTRY = 'Country';
+    /**
+     * Constants for keys of data array. Identical to the name of the getter in snake case
+     */
+    public const COUNTRY  = 'country';
+    /**#@-*/
 
     /**
      * @param string $country
@@ -21,7 +26,7 @@ interface AddressInterface
     public function setCountry(string $country): void;
 
     /**
-     * @return  string
+     * @return string
      */
     public function getCountry(): string;
 
