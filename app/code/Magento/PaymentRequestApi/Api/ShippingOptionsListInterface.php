@@ -7,12 +7,16 @@ declare(strict_types=1);
 
 namespace Magento\PaymentRequestApi\Api;
 
-
+/**
+ * @todo  write meaningfully desciption
+ *
+ * @api
+ */
 interface ShippingOptionsListInterface
 {
     /**
-     * @param \Magento\PaymentRequestApi\Api\AddressInterface $addressInit
-     * @return \Magento\PaymentRequestApi\Api\PaymentShippingOptionInterface[]
+     * @param \Magento\PaymentRequestApi\Api\Data\AddressInterface $address
+     * @return \Magento\PaymentRequestApi\Api\Data\PaymentShippingOptionInterface[]
      */
-    public function get(AddressInterface $addressInit): array;
+    public function get(\Magento\PaymentRequestApi\Api\Data\AddressInterface $address): array;
 }

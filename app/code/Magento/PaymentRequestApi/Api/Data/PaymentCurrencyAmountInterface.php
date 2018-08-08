@@ -5,7 +5,7 @@
  */
 declare(strict_types=1);
 
-namespace Magento\PaymentRequestApi\Api;
+namespace Magento\PaymentRequestApi\Api\Data;
 
 /**
  * Represents PaymentCurrencyAmount is used to supply monetary amounts for

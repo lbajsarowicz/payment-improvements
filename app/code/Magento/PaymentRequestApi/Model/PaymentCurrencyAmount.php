@@ -1,25 +1,50 @@
 <?php
 /**
- * Copyright (c) 2018 TechDivision GmbH <info@techdivision.com> - TechDivision GmbH
- * All rights reserved
- *
- * This product includes proprietary software developed at TechDivision GmbH, Germany
- * For more information see http://www.techdivision.com/
- *
- * To obtain a valid license for using this software please contact us at
- * license@techdivision.com
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
  */
+declare(strict_types=1);
 
 namespace Magento\PaymentRequestApi\Model;
 
 
+use Magento\PaymentRequestApi\Api\Data\PaymentCurrencyAmountInterface;
+
 /**
- * @copyright  Copyright (c) 2018 TechDivision GmbH <info@techdivision.com> - TechDivision GmbH
- *
- * @link       https://www.techdivision.com/
- * @author     Lars Roettig l.roettig@techdivision.com
+ * @inheritdoc
  */
-class PaymentCurrencyAmount
+class PaymentCurrencyAmount implements PaymentCurrencyAmountInterface
 {
 
+    /**
+     * @inheritdoc
+     */
+    public function getCurrency(): string
+    {
+        // TODO: Implement getCurrency() method.
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setCurrency(string $currency): void
+    {
+        // TODO: Implement setCurrency() method.
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setValue(string $value): void
+    {
+        // TODO: Implement setValue() method.
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getValue(): string
+    {
+        // TODO: Implement getValue() method.
+    }
 }

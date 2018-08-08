@@ -5,10 +5,16 @@
  */
 declare(strict_types=1);
 
-namespace Magento\PaymentRequestApi\Api;
+namespace Magento\PaymentRequestApi\Api\Data;
 
+/**
+ * Test
+ * @api
+ */
 interface AddressInterface
 {
+    const COUNTRY = 'Country';
+
     /**
      * @param string $country
      */
@@ -18,4 +24,5 @@ interface AddressInterface
      * @return  string
      */
     public function getCountry(): string;
+
 }

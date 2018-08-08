@@ -5,7 +5,7 @@
  */
 declare(strict_types=1);
 
-namespace Magento\PaymentRequestApi\Api;
+namespace Magento\PaymentRequestApi\Api\Data;
 
 /**
  * Represents PaymentShippingOption dictionary describing a shipping option for
@@ -18,17 +18,6 @@ namespace Magento\PaymentRequestApi\Api;
 interface PaymentShippingOptionInterface
 {
     /**
-     * @param string $id
-     * @return void
-     */
-    public function setId(string $id): void;
-
-    /**
-     * @return string
-     */
-    public function getId(): string;
-
-    /**
      * @param string $label
      * @return void
      */
@@ -40,13 +29,13 @@ interface PaymentShippingOptionInterface
     public function getLabel(): string;
 
     /**
-     * @param \Magento\PaymentRequestApi\Api\PaymentCurrencyAmountInterface $amount
+     * @param \Magento\PaymentRequestApi\Api\Data\PaymentCurrencyAmountInterface $amount
      * @return void
      */
     public function setAmount(PaymentCurrencyAmountInterface $amount): void;
 
     /**
-     * @return \Magento\PaymentRequestApi\Api\PaymentCurrencyAmountInterface
+     * @return \Magento\PaymentRequestApi\Api\Data\PaymentCurrencyAmountInterface
      */
     public function getAmount(): PaymentCurrencyAmountInterface;
 }

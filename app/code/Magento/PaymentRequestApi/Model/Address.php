@@ -1,25 +1,39 @@
 <?php
 /**
- * Copyright (c) 2018 TechDivision GmbH <info@techdivision.com> - TechDivision GmbH
- * All rights reserved
- *
- * This product includes proprietary software developed at TechDivision GmbH, Germany
- * For more information see http://www.techdivision.com/
- *
- * To obtain a valid license for using this software please contact us at
- * license@techdivision.com
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
  */
+declare(strict_types=1);
 
 namespace Magento\PaymentRequestApi\Model;
 
+use Magento\Framework\Api\CustomAttributesDataInterface;
+use Magento\Framework\DataObject;
+use Magento\PaymentRequestApi\Api\Data\AddressInterface;
 
 /**
- * @copyright  Copyright (c) 2018 TechDivision GmbH <info@techdivision.com> - TechDivision GmbH
- *
- * @link       https://www.techdivision.com/
- * @author     Lars Roettig l.roettig@techdivision.com
+ * @inheritdoc
  */
-class Address
+class Address implements AddressInterface
 {
+    /**
+     * @var string
+     */
+    private $country;
 
+    /**
+     * @return  string
+     */
+    public function getCountry(): string
+    {
+
+    }
+
+    /**
+     * @param string $country
+     */
+    public function setCountry(string $country): void
+    {
+
+    }
 }

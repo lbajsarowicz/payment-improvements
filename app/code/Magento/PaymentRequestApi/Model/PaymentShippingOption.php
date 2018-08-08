@@ -1,25 +1,66 @@
 <?php
 /**
- * Copyright (c) 2018 TechDivision GmbH <info@techdivision.com> - TechDivision GmbH
- * All rights reserved
- *
- * This product includes proprietary software developed at TechDivision GmbH, Germany
- * For more information see http://www.techdivision.com/
- *
- * To obtain a valid license for using this software please contact us at
- * license@techdivision.com
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
  */
+declare(strict_types=1);
 
 namespace Magento\PaymentRequestApi\Model;
 
+use Magento\PaymentRequestApi\Api\Data\PaymentCurrencyAmountInterface;
+use Magento\PaymentRequestApi\Api\Data\PaymentShippingOptionInterface;
 
 /**
- * @copyright  Copyright (c) 2018 TechDivision GmbH <info@techdivision.com> - TechDivision GmbH
- *
- * @link       https://www.techdivision.com/
- * @author     Lars Roettig l.roettig@techdivision.com
+ * @inheritdoc
  */
-class PaymentShippingOption
+class PaymentShippingOption implements PaymentShippingOptionInterface
 {
 
+    /**
+     * @inheritdoc
+     */
+    public function setId(string $id): void
+    {
+        // TODO: Implement setId() method.
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getId(): string
+    {
+        // TODO: Implement getId() method.
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setLabel(string $label): void
+    {
+        // TODO: Implement setLabel() method.
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getLabel(): string
+    {
+        // TODO: Implement getLabel() method.
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setAmount(PaymentCurrencyAmountInterface $amount): void
+    {
+        // TODO: Implement setAmount() method.
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAmount(): PaymentCurrencyAmountInterface
+    {
+        // TODO: Implement getAmount() method.
+    }
 }

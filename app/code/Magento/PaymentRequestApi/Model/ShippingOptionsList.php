@@ -7,8 +7,7 @@ declare(strict_types=1);
 
 namespace Magento\PaymentRequestApi\Model;
 
-use Magento\PaymentRequestApi\Api\AddressInterface;
-use Magento\PaymentRequestApi\Api\PaymentShippingOptionInterface;
+use Magento\PaymentRequestApi\Api\Data\AddressInterface;
 use Magento\PaymentRequestApi\Api\ShippingOptionsListInterface;
 
 /**
@@ -16,26 +15,11 @@ use Magento\PaymentRequestApi\Api\ShippingOptionsListInterface;
  */
 class ShippingOptionsList implements ShippingOptionsListInterface
 {
-
-    /** @var PaymentShippingOptionInterfaceFactory */
-    private $paymentShippingOptionFactory;
-
-    public function __construct(PaymentShippingOptionInterfaceFactory $paymentShippingOptionFactory)
-    {
-        $this->paymentShippingOptionFactory = $paymentShippingOptionFactory;
-    }
-
     /**
-     * @param \Magento\PaymentRequestApi\Api\AddressInterface $addressInit
-     * @return \Magento\PaymentRequestApi\Api\PaymentShippingOptionInterface[]
+     * @inheritdoc
      */
-    public function get(AddressInterface $addressInit): array
+    public function get(AddressInterface $address): array
     {
-
-
-
-
-
-
+        return [];
     }
 }

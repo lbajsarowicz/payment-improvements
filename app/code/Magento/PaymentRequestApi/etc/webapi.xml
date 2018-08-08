@@ -1,19 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-/**
- * Copyright (c) 2018 TechDivision GmbH <info@techdivision.com> - TechDivision GmbH
- * All rights reserved
- *
- * This product includes proprietary software developed at TechDivision GmbH, Germany
- * For more information see http://www.techdivision.com/
- *
- * To obtain a valid license for using this software please contact us at
- * license@techdivision.com
- */
-
-/**
- * @copyright  Copyright (c) 2018 TechDivision GmbH <info@techdivision.com> - TechDivision GmbH
- * @link       http://www.techdivision.com/
- * @author     Lars Roettig l.roettig@techdivision.com
- */
- -->
+<?xml version="1.0"?><!--/** * Copyright © Magento, Inc. All rights reserved. * See COPYING.txt for license details. */--><routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">    <!-- Source -->    <route url="/V1/paymentrequestapi/shippingoptionslist" method="GET">        <service class="Magento\PaymentRequestApi\Api\ShippingOptionsListInterface" method="get"/>        <resources>            <resource ref="anonymous"/>        </resources>    </route></routes>
