@@ -10,7 +10,7 @@ namespace Magento\PaymentRequestApi\Api\Data;
 use Magento\Framework\Api\ExtensibleDataInterface;
 
 /**
- * Test
+ * Represents Address Data Interface for the PaymentRequestApi.
  * @api
  */
 interface AddressInterface
