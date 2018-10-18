@@ -10,4 +10,5 @@
     <preference for="Magento\PaymentRequestApi\Api\Data\PaymentShippingOptionInterface" type="Magento\PaymentRequestApi\Model\PaymentShippingOption" />
     <preference for="Magento\PaymentRequestApi\Api\Data\AddressInterface" type="Magento\PaymentRequestApi\Model\Address"/>
     <preference for="Magento\PaymentRequestApi\Api\Data\PaymentCurrencyAmountInterface" type="Magento\PaymentRequestApi\Model\PaymentCurrencyAmount" />
+    <preference for="Magento\PaymentRequestApi\Api\Data\RequestMerchantSessionInterface" type="Magento\PaymentRequestApi\Model\RequestMerchantSession"/>
 </config>

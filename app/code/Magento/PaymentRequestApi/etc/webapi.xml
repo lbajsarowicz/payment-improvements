@@ -13,4 +13,10 @@
             <resource ref="anonymous"/>
         </resources>
     </route>
+    <route url="/V1/paymentrequestapi/requestMerchantSession" method="GET">
+        <service class="Magento\PaymentRequestApi\Api\Data\RequestMerchantSessionInterface" method="get"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
 </routes>
