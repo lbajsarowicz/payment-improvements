@@ -5,43 +5,58 @@
  */
 namespace Magento\Braintree\Model\Adapter;
 
-use Braintree\ClientToken;
 use Braintree\Configuration;
 use Braintree\CreditCard;
-use Braintree\PaymentMethodNonce;
-use Braintree\Transaction;
+use Braintree\ResourceCollection;
+use Braintree\Result\Successful;
+use Braintree\Result\Error;
 use Magento\Braintree\Gateway\Config\Config;
 use Magento\Braintree\Model\Adminhtml\Source\Environment;
 
 /**
  * Class BraintreeAdapter
  * Use \Magento\Braintree\Model\Adapter\BraintreeAdapterFactory to create new instance of adapter.
- * @codeCoverageIgnore
  */
 class BraintreeAdapter
 {
     /**
      * @var Config
+     * @deprecated
      */
     private $config;
 
     /**
-     * @param string $merchantId
-     * @param string $publicKey
-     * @param string $privateKey
-     * @param string $environment
+     * @var \Braintree\Gateway
      */
-    public function __construct($merchantId, $publicKey, $privateKey, $environment)
-    {
-        $this->merchantId($merchantId);
-        $this->publicKey($publicKey);
-        $this->privateKey($privateKey);
+    private $braintreeGateway;
 
-        if ($environment === Environment::ENVIRONMENT_PRODUCTION) {
-            $this->environment(Environment::ENVIRONMENT_PRODUCTION);
-        } else {
-            $this->environment(Environment::ENVIRONMENT_SANDBOX);
-        }
+    /**
+     * BraintreeAdapter constructor.
+     * @param $merchantId
+     * @param $publicKey
+     * @param $privateKey
+     * @param $environment
+     * @param BraintreeGatewayFactory|null $braintreeGatewayFactory
+     */
+    public function __construct(
+        $merchantId,
+        $publicKey,
+        $privateKey,
+        $environment,
+        BraintreeGatewayFactory $braintreeGatewayFactory = null
+    ) {
+        $braintreeGatewayFactory = $braintreeGatewayFactory
+            ?: \Magento\Framework\App\ObjectManager::getInstance()
+                ->get(BraintreeGatewayFactory::class);
+
+        $this->braintreeGateway = $braintreeGatewayFactory->create([
+            'environment' => $environment === Environment::ENVIRONMENT_PRODUCTION ?
+                Environment::ENVIRONMENT_PRODUCTION :
+                Environment::ENVIRONMENT_SANDBOX,
+            'merchantId' => $merchantId,
+            'publicKey' => $publicKey,
+            'privateKey' => $privateKey
+        ]);
     }
 
     /**
@@ -65,6 +80,7 @@ class BraintreeAdapter
     /**
      * @param string|null $value
      * @return mixed
+     * @deprecated is not used anymore
      */
     public function environment($value = null)
     {
@@ -74,6 +90,7 @@ class BraintreeAdapter
     /**
      * @param string|null $value
      * @return mixed
+     * @deprecated
      */
     public function merchantId($value = null)
     {
@@ -83,6 +100,7 @@ class BraintreeAdapter
     /**
      * @param string|null $value
      * @return mixed
+     * @deprecated
      */
     public function publicKey($value = null)
     {
@@ -92,6 +110,7 @@ class BraintreeAdapter
     /**
      * @param string|null $value
      * @return mixed
+     * @deprecated
      */
     public function privateKey($value = null)
     {
@@ -100,12 +119,12 @@ class BraintreeAdapter
 
     /**
      * @param array $params
-     * @return \Braintree\Result\Successful|\Braintree\Result\Error|null
+     * @return string|null
      */
     public function generate(array $params = [])
     {
         try {
-            return ClientToken::generate($params);
+            return $this->braintreeGateway->clientToken()->generate($params);
         } catch (\Exception $e) {
             return null;
         }
@@ -113,12 +132,12 @@ class BraintreeAdapter
 
     /**
      * @param string $token
-     * @return \Braintree\CreditCard|null
+     * @return CreditCard|null
      */
     public function find($token)
     {
         try {
-            return CreditCard::find($token);
+            return $this->braintreeGateway->creditCard()->find($token);
         } catch (\Exception $e) {
             return null;
         }
@@ -126,68 +145,67 @@ class BraintreeAdapter
 
     /**
      * @param array $filters
-     * @return \Braintree\ResourceCollection
+     * @return ResourceCollection
      */
     public function search(array $filters)
     {
-        return Transaction::search($filters);
+        return $this->braintreeGateway->transaction()->search($filters);
     }
 
     /**
-     * @param string $token
-     * @return \Braintree\Result\Successful|\Braintree\Result\Error
+     * @param $token
+     * @return Successful
      */
     public function createNonce($token)
     {
-        return PaymentMethodNonce::create($token);
+        return $this->braintreeGateway->paymentMethodNonce()->create($token);
     }
 
     /**
      * @param array $attributes
-     * @return \Braintree\Result\Successful|\Braintree\Result\Error
+     * @return \Braintree\Result\Error|\Braintree\Result\Successful
      */
     public function sale(array $attributes)
     {
-        return Transaction::sale($attributes);
+        return $this->braintreeGateway->transaction()->sale($attributes);
     }
 
     /**
      * @param string $transactionId
      * @param null|float $amount
-     * @return \Braintree\Result\Successful|\Braintree\Result\Error
+     * @return \Braintree\Result\Error|\Braintree\Result\Successful
      */
     public function submitForSettlement($transactionId, $amount = null)
     {
-        return Transaction::submitForSettlement($transactionId, $amount);
+        return $this->braintreeGateway->transaction()->submitForSettlement($transactionId, $amount);
     }
 
     /**
      * @param string $transactionId
-     * @return \Braintree\Result\Successful|\Braintree\Result\Error
+     * @return Error|Successful
      */
     public function void($transactionId)
     {
-        return Transaction::void($transactionId);
+        return $this->braintreeGateway->transaction()->void($transactionId);
     }
 
     /**
      * @param string $transactionId
      * @param null|float $amount
-     * @return \Braintree\Result\Successful|\Braintree\Result\Error
+     * @return Error|Successful
      */
     public function refund($transactionId, $amount = null)
     {
-        return Transaction::refund($transactionId, $amount);
+        return $this->braintreeGateway->transaction()->refund($transactionId, $amount);
     }
 
     /**
-     * Clone original transaction
      * @param string $transactionId
      * @param array $attributes
-     * @return mixed
+     * @return Error|Successful
      */
     public function cloneTransaction($transactionId, array $attributes)
     {
-        return Transaction::cloneTransaction($transactionId, $attributes);
+        return $this->braintreeGateway->transaction()->cloneTransaction($transactionId, $attributes);
     }
 }
