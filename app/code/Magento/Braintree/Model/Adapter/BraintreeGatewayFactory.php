@@ -9,6 +9,10 @@ namespace Magento\Braintree\Model\Adapter;
 
 use Braintree\Gateway;
 
+/**
+ * The BraintreeGatewayFactory class creates a new instance of a Braintree\Gateway
+ * with the configuration parameters provided via $config argument.
+ */
 class BraintreeGatewayFactory
 {
     /**

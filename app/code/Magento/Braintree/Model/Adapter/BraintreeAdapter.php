@@ -5,12 +5,10 @@
  */
 namespace Magento\Braintree\Model\Adapter;
 
-use Braintree\Configuration;
 use Braintree\CreditCard;
 use Braintree\ResourceCollection;
 use Braintree\Result\Successful;
 use Braintree\Result\Error;
-use Magento\Braintree\Gateway\Config\Config;
 use Magento\Braintree\Model\Adminhtml\Source\Environment;
 
 /**
@@ -19,12 +17,6 @@ use Magento\Braintree\Model\Adminhtml\Source\Environment;
  */
 class BraintreeAdapter
 {
-    /**
-     * @var Config
-     * @deprecated
-     */
-    private $config;
-
     /**
      * @var \Braintree\Gateway
      */
@@ -43,12 +35,8 @@ class BraintreeAdapter
         $publicKey,
         $privateKey,
         $environment,
-        BraintreeGatewayFactory $braintreeGatewayFactory = null
+        BraintreeGatewayFactory $braintreeGatewayFactory
     ) {
-        $braintreeGatewayFactory = $braintreeGatewayFactory
-            ?: \Magento\Framework\App\ObjectManager::getInstance()
-                ->get(BraintreeGatewayFactory::class);
-
         $this->braintreeGateway = $braintreeGatewayFactory->create([
             'environment' => $environment === Environment::ENVIRONMENT_PRODUCTION ?
                 Environment::ENVIRONMENT_PRODUCTION :
@@ -57,64 +45,6 @@ class BraintreeAdapter
             'publicKey' => $publicKey,
             'privateKey' => $privateKey
         ]);
-    }
-
-    /**
-     * Initializes credentials.
-     *
-     * @return void
-     * @deprecated is not used anymore
-     */
-    protected function initCredentials()
-    {
-        if ($this->config->getValue(Config::KEY_ENVIRONMENT) == Environment::ENVIRONMENT_PRODUCTION) {
-            $this->environment(Environment::ENVIRONMENT_PRODUCTION);
-        } else {
-            $this->environment(Environment::ENVIRONMENT_SANDBOX);
-        }
-        $this->merchantId($this->config->getValue(Config::KEY_MERCHANT_ID));
-        $this->publicKey($this->config->getValue(Config::KEY_PUBLIC_KEY));
-        $this->privateKey($this->config->getValue(Config::KEY_PRIVATE_KEY));
-    }
-
-    /**
-     * @param string|null $value
-     * @return mixed
-     * @deprecated is not used anymore
-     */
-    public function environment($value = null)
-    {
-        return Configuration::environment($value);
-    }
-
-    /**
-     * @param string|null $value
-     * @return mixed
-     * @deprecated
-     */
-    public function merchantId($value = null)
-    {
-        return Configuration::merchantId($value);
-    }
-
-    /**
-     * @param string|null $value
-     * @return mixed
-     * @deprecated
-     */
-    public function publicKey($value = null)
-    {
-        return Configuration::publicKey($value);
-    }
-
-    /**
-     * @param string|null $value
-     * @return mixed
-     * @deprecated
-     */
-    public function privateKey($value = null)
-    {
-        return Configuration::privateKey($value);
     }
 
     /**

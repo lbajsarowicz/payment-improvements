@@ -16,24 +16,58 @@ use Braintree\Result\Successful;
 use Braintree\TransactionGateway;
 use Magento\Braintree\Model\Adapter\BraintreeAdapter;
 use Magento\Braintree\Model\Adapter\BraintreeGatewayFactory;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class BraintreeAdapterTest extends TestCase
 {
-    public function testGenerate(): void
-    {
-        $expected = 'string';
-        $params = ['key' => 'value'];
+    /**
+     * @var BraintreeGatewayFactory|MockObject
+     */
+    private $braintreeGatewayFactoryMock;
 
+    /**
+     * @var BraintreeAdapter
+     */
+    private $object;
+
+    /**
+     * @var Gateway|MockObject
+     */
+    private $braintree;
+
+    protected function setUp()
+    {
         $publicKey = 'public_key';
         $privateKey = 'private_key';
         $environment = 'production';
         $merchantId = 'merchant_id';
 
-        $braintreeMock = $this->getMockBuilder(Gateway::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['clientToken'])
+        $this->braintreeGatewayFactoryMock = $this->getMockBuilder(BraintreeGatewayFactory::class)
+            ->setMethods(['create'])
             ->getMock();
+
+        $this->braintree = $this->getMockBuilder(Gateway::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['clientToken', 'creditCard', 'transaction', 'paymentMethodNonce'])
+            ->getMock();
+
+        $this->braintreeGatewayFactoryMock->method('create')
+            ->willReturn($this->braintree);
+
+        $this->object = new BraintreeAdapter(
+            $merchantId,
+            $publicKey,
+            $privateKey,
+            $environment,
+            $this->braintreeGatewayFactoryMock
+        );
+    }
+
+    public function testGenerate(): void
+    {
+        $expected = 'string';
+        $params = ['key' => 'value'];
 
         $clientTokenMock = $this->getMockBuilder(ClientTokenGateway::class)
             ->disableOriginalConstructor()
@@ -45,42 +79,17 @@ class BraintreeAdapterTest extends TestCase
             ->with($params)
             ->willReturn($expected);
 
-        $braintreeMock->expects($this->once())
+        $this->braintree->expects($this->once())
             ->method('clientToken')
             ->willReturn($clientTokenMock);
 
-        $braintreeGatewayFactoryMock = $this->getMockBuilder(BraintreeGatewayFactory::class)
-            ->setMethods(['create'])
-            ->getMock();
-
-        $braintreeGatewayFactoryMock->expects($this->once())
-            ->method('create')
-            ->willReturn($braintreeMock);
-
-        $object = new BraintreeAdapter(
-            $merchantId,
-            $publicKey,
-            $privateKey,
-            $environment,
-            $braintreeGatewayFactoryMock
-        );
-
-        $this->assertEquals($expected, $object->generate($params));
+        $this->assertInstanceOf(BraintreeAdapter::class, $this->object);
+        $this->assertEquals($expected, $this->object->generate($params));
     }
 
     public function testGenerateNull(): void
     {
         $params = ['key' => 'value'];
-
-        $publicKey = 'public_key';
-        $privateKey = 'private_key';
-        $environment = 'production';
-        $merchantId = 'merchant_id';
-
-        $braintreeMock = $this->getMockBuilder(Gateway::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['clientToken'])
-            ->getMock();
 
         $clientTokenMock = $this->getMockBuilder(ClientTokenGateway::class)
             ->disableOriginalConstructor()
@@ -92,27 +101,11 @@ class BraintreeAdapterTest extends TestCase
             ->with($params)
             ->will($this->throwException(new \InvalidArgumentException()));
 
-        $braintreeMock->expects($this->once())
+        $this->braintree->expects($this->once())
             ->method('clientToken')
             ->willReturn($clientTokenMock);
 
-        $braintreeGatewayFactoryMock = $this->getMockBuilder(BraintreeGatewayFactory::class)
-            ->setMethods(['create'])
-            ->getMock();
-
-        $braintreeGatewayFactoryMock->expects($this->once())
-            ->method('create')
-            ->willReturn($braintreeMock);
-
-        $object = new BraintreeAdapter(
-            $merchantId,
-            $publicKey,
-            $privateKey,
-            $environment,
-            $braintreeGatewayFactoryMock
-        );
-
-        $this->assertNull($object->generate($params));
+        $this->assertNull($this->object->generate($params));
     }
 
     public function testFind(): void
@@ -120,16 +113,6 @@ class BraintreeAdapterTest extends TestCase
         $expected = 'string';
         $token = 'token';
 
-        $publicKey = 'public_key';
-        $privateKey = 'private_key';
-        $environment = 'production';
-        $merchantId = 'merchant_id';
-
-        $braintreeMock = $this->getMockBuilder(Gateway::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['creditCard'])
-            ->getMock();
-
         $creditCardGateway = $this->getMockBuilder(CreditCardGateway::class)
             ->disableOriginalConstructor()
             ->setMethods(['find'])
@@ -140,42 +123,16 @@ class BraintreeAdapterTest extends TestCase
             ->with($token)
             ->willReturn($expected);
 
-        $braintreeMock->expects($this->once())
+        $this->braintree->expects($this->once())
             ->method('creditCard')
             ->willReturn($creditCardGateway);
 
-        $braintreeGatewayFactoryMock = $this->getMockBuilder(BraintreeGatewayFactory::class)
-            ->setMethods(['create'])
-            ->getMock();
-
-        $braintreeGatewayFactoryMock->expects($this->once())
-            ->method('create')
-            ->willReturn($braintreeMock);
-
-        $object = new BraintreeAdapter(
-            $merchantId,
-            $publicKey,
-            $privateKey,
-            $environment,
-            $braintreeGatewayFactoryMock
-        );
-
-        $this->assertEquals($expected, $object->find($token));
+        $this->assertEquals($expected, $this->object->find($token));
     }
 
     public function testFindNull(): void
     {
         $token = 'token';
-
-        $publicKey = 'public_key';
-        $privateKey = 'private_key';
-        $environment = 'production';
-        $merchantId = 'merchant_id';
-
-        $braintreeMock = $this->getMockBuilder(Gateway::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['creditCard'])
-            ->getMock();
 
         $creditCardGateway = $this->getMockBuilder(CreditCardGateway::class)
             ->disableOriginalConstructor()
@@ -187,42 +144,16 @@ class BraintreeAdapterTest extends TestCase
             ->with($token)
             ->will($this->throwException(new \InvalidArgumentException()));
 
-        $braintreeMock->expects($this->once())
+        $this->braintree->expects($this->once())
             ->method('creditCard')
             ->willReturn($creditCardGateway);
 
-        $braintreeGatewayFactoryMock = $this->getMockBuilder(BraintreeGatewayFactory::class)
-            ->setMethods(['create'])
-            ->getMock();
-
-        $braintreeGatewayFactoryMock->expects($this->once())
-            ->method('create')
-            ->willReturn($braintreeMock);
-
-        $object = new BraintreeAdapter(
-            $merchantId,
-            $publicKey,
-            $privateKey,
-            $environment,
-            $braintreeGatewayFactoryMock
-        );
-
-        $this->assertNull($object->find($token));
+        $this->assertNull($this->object->find($token));
     }
 
     public function testSearch(): void
     {
         $filters = ['filter1', 'filter2'];
-
-        $publicKey = 'public_key';
-        $privateKey = 'private_key';
-        $environment = 'production';
-        $merchantId = 'merchant_id';
-
-        $braintreeMock = $this->getMockBuilder(Gateway::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['transaction'])
-            ->getMock();
 
         $transactionGatewayMock = $this->getMockBuilder(TransactionGateway::class)
             ->disableOriginalConstructor()
@@ -238,37 +169,16 @@ class BraintreeAdapterTest extends TestCase
             ->with($filters)
             ->willReturn($resourceCollectionMock);
 
-        $braintreeMock->expects($this->once())
+        $this->braintree->expects($this->once())
             ->method('transaction')
             ->willReturn($transactionGatewayMock);
 
-        $braintreeGatewayFactoryMock = $this->getMockBuilder(BraintreeGatewayFactory::class)
-            ->setMethods(['create'])
-            ->getMock();
-
-        $braintreeGatewayFactoryMock->expects($this->once())
-            ->method('create')
-            ->willReturn($braintreeMock);
-
-        $object = new BraintreeAdapter(
-            $merchantId,
-            $publicKey,
-            $privateKey,
-            $environment,
-            $braintreeGatewayFactoryMock
-        );
-
-        $this->assertEquals($resourceCollectionMock, $object->search($filters));
+        $this->assertEquals($resourceCollectionMock, $this->object->search($filters));
     }
 
-    public function testCreateNone(): void
+    public function testCreateNonce(): void
     {
         $token = 'token';
-
-        $publicKey = 'public_key';
-        $privateKey = 'private_key';
-        $environment = 'production';
-        $merchantId = 'merchant_id';
 
         $braintreeMock = $this->getMockBuilder(Gateway::class)
             ->disableOriginalConstructor()
@@ -288,42 +198,17 @@ class BraintreeAdapterTest extends TestCase
             ->with($token)
             ->willReturn($successfulMock);
 
-        $braintreeMock->expects($this->once())
+        $this->braintree->expects($this->once())
             ->method('paymentMethodNonce')
             ->willReturn($paymentMethodNonceGatewayMock);
 
-        $braintreeGatewayFactoryMock = $this->getMockBuilder(BraintreeGatewayFactory::class)
-            ->setMethods(['create'])
-            ->getMock();
 
-        $braintreeGatewayFactoryMock->expects($this->once())
-            ->method('create')
-            ->willReturn($braintreeMock);
-
-        $object = new BraintreeAdapter(
-            $merchantId,
-            $publicKey,
-            $privateKey,
-            $environment,
-            $braintreeGatewayFactoryMock
-        );
-
-        $this->assertEquals($successfulMock, $object->createNonce($token));
+        $this->assertEquals($successfulMock, $this->object->createNonce($token));
     }
 
     public function testSale(): void
     {
         $attributes = ['attribute1', 'attribute2'];
-
-        $publicKey = 'public_key';
-        $privateKey = 'private_key';
-        $environment = 'production';
-        $merchantId = 'merchant_id';
-
-        $braintreeMock = $this->getMockBuilder(Gateway::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['transaction'])
-            ->getMock();
 
         $transactionGatewayMock = $this->getMockBuilder(TransactionGateway::class)
             ->disableOriginalConstructor()
@@ -339,43 +224,17 @@ class BraintreeAdapterTest extends TestCase
             ->with($attributes)
             ->willReturn($resourceCollectionMock);
 
-        $braintreeMock->expects($this->once())
+        $this->braintree->expects($this->once())
             ->method('transaction')
             ->willReturn($transactionGatewayMock);
 
-        $braintreeGatewayFactoryMock = $this->getMockBuilder(BraintreeGatewayFactory::class)
-            ->setMethods(['create'])
-            ->getMock();
-
-        $braintreeGatewayFactoryMock->expects($this->once())
-            ->method('create')
-            ->willReturn($braintreeMock);
-
-        $object = new BraintreeAdapter(
-            $merchantId,
-            $publicKey,
-            $privateKey,
-            $environment,
-            $braintreeGatewayFactoryMock
-        );
-
-        $this->assertEquals($resourceCollectionMock, $object->sale($attributes));
+        $this->assertEquals($resourceCollectionMock, $this->object->sale($attributes));
     }
 
     public function testSubmitForSettlement(): void
     {
         $transactionId = 'transaction_id';
         $amount = 0.01;
-
-        $publicKey = 'public_key';
-        $privateKey = 'private_key';
-        $environment = 'production';
-        $merchantId = 'merchant_id';
-
-        $braintreeMock = $this->getMockBuilder(Gateway::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['transaction'])
-            ->getMock();
 
         $transactionGatewayMock = $this->getMockBuilder(TransactionGateway::class)
             ->disableOriginalConstructor()
@@ -391,42 +250,16 @@ class BraintreeAdapterTest extends TestCase
             ->with($transactionId, $amount)
             ->willReturn($successfulMock);
 
-        $braintreeMock->expects($this->once())
+        $this->braintree->expects($this->once())
             ->method('transaction')
             ->willReturn($transactionGatewayMock);
 
-        $braintreeGatewayFactoryMock = $this->getMockBuilder(BraintreeGatewayFactory::class)
-            ->setMethods(['create'])
-            ->getMock();
-
-        $braintreeGatewayFactoryMock->expects($this->once())
-            ->method('create')
-            ->willReturn($braintreeMock);
-
-        $object = new BraintreeAdapter(
-            $merchantId,
-            $publicKey,
-            $privateKey,
-            $environment,
-            $braintreeGatewayFactoryMock
-        );
-
-        $this->assertEquals($successfulMock, $object->submitForSettlement($transactionId, $amount));
+        $this->assertEquals($successfulMock, $this->object->submitForSettlement($transactionId, $amount));
     }
 
     public function testVoid(): void
     {
         $transactionId = 'transaction_id';
-
-        $publicKey = 'public_key';
-        $privateKey = 'private_key';
-        $environment = 'production';
-        $merchantId = 'merchant_id';
-
-        $braintreeMock = $this->getMockBuilder(Gateway::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['transaction'])
-            ->getMock();
 
         $transactionGatewayMock = $this->getMockBuilder(TransactionGateway::class)
             ->disableOriginalConstructor()
@@ -442,43 +275,17 @@ class BraintreeAdapterTest extends TestCase
             ->with($transactionId)
             ->willReturn($successfulMock);
 
-        $braintreeMock->expects($this->once())
+        $this->braintree->expects($this->once())
             ->method('transaction')
             ->willReturn($transactionGatewayMock);
 
-        $braintreeGatewayFactoryMock = $this->getMockBuilder(BraintreeGatewayFactory::class)
-            ->setMethods(['create'])
-            ->getMock();
-
-        $braintreeGatewayFactoryMock->expects($this->once())
-            ->method('create')
-            ->willReturn($braintreeMock);
-
-        $object = new BraintreeAdapter(
-            $merchantId,
-            $publicKey,
-            $privateKey,
-            $environment,
-            $braintreeGatewayFactoryMock
-        );
-
-        $this->assertEquals($successfulMock, $object->void($transactionId));
+        $this->assertEquals($successfulMock, $this->object->void($transactionId));
     }
 
     public function testRefund(): void
     {
         $transactionId = 'transaction_id';
         $amount = 0.01;
-
-        $publicKey = 'public_key';
-        $privateKey = 'private_key';
-        $environment = 'production';
-        $merchantId = 'merchant_id';
-
-        $braintreeMock = $this->getMockBuilder(Gateway::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['transaction'])
-            ->getMock();
 
         $transactionGatewayMock = $this->getMockBuilder(TransactionGateway::class)
             ->disableOriginalConstructor()
@@ -494,43 +301,17 @@ class BraintreeAdapterTest extends TestCase
             ->with($transactionId, $amount)
             ->willReturn($successfulMock);
 
-        $braintreeMock->expects($this->once())
+        $this->braintree->expects($this->once())
             ->method('transaction')
             ->willReturn($transactionGatewayMock);
 
-        $braintreeGatewayFactoryMock = $this->getMockBuilder(BraintreeGatewayFactory::class)
-            ->setMethods(['create'])
-            ->getMock();
-
-        $braintreeGatewayFactoryMock->expects($this->once())
-            ->method('create')
-            ->willReturn($braintreeMock);
-
-        $object = new BraintreeAdapter(
-            $merchantId,
-            $publicKey,
-            $privateKey,
-            $environment,
-            $braintreeGatewayFactoryMock
-        );
-
-        $this->assertEquals($successfulMock, $object->refund($transactionId, $amount));
+        $this->assertEquals($successfulMock, $this->object->refund($transactionId, $amount));
     }
 
     public function testCloneTransaction(): void
     {
         $transactionId = 'transaction_id';
         $attributes = ['attribute1', 'attribute2'];
-
-        $publicKey = 'public_key';
-        $privateKey = 'private_key';
-        $environment = 'production';
-        $merchantId = 'merchant_id';
-
-        $braintreeMock = $this->getMockBuilder(Gateway::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['transaction'])
-            ->getMock();
 
         $transactionGatewayMock = $this->getMockBuilder(TransactionGateway::class)
             ->disableOriginalConstructor()
@@ -546,26 +327,10 @@ class BraintreeAdapterTest extends TestCase
             ->with($transactionId, $attributes)
             ->willReturn($successfulMock);
 
-        $braintreeMock->expects($this->once())
+        $this->braintree->expects($this->once())
             ->method('transaction')
             ->willReturn($transactionGatewayMock);
 
-        $braintreeGatewayFactoryMock = $this->getMockBuilder(BraintreeGatewayFactory::class)
-            ->setMethods(['create'])
-            ->getMock();
-
-        $braintreeGatewayFactoryMock->expects($this->once())
-            ->method('create')
-            ->willReturn($braintreeMock);
-
-        $object = new BraintreeAdapter(
-            $merchantId,
-            $publicKey,
-            $privateKey,
-            $environment,
-            $braintreeGatewayFactoryMock
-        );
-
-        $this->assertEquals($successfulMock, $object->cloneTransaction($transactionId, $attributes));
+        $this->assertEquals($successfulMock, $this->object->cloneTransaction($transactionId, $attributes));
     }
 }
