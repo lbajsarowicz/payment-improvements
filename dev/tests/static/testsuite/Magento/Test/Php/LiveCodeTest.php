@@ -11,6 +11,7 @@ use Magento\TestFramework\CodingStandard\Tool\CodeMessDetector;
 use Magento\TestFramework\CodingStandard\Tool\CodeSniffer;
 use Magento\TestFramework\CodingStandard\Tool\CodeSniffer\Wrapper;
 use Magento\TestFramework\CodingStandard\Tool\CopyPasteDetector;
+use Magento\TestFramework\CodingStandard\Tool\PhpCompatibility;
 use PHPMD\TextUI\Command;
 
 /**
@@ -197,10 +198,60 @@ class LiveCodeTest extends \PHPUnit\Framework\TestCase
         return Files::init()->readLists(__DIR__ . '/_files/whitelist/common.txt');
     }
 
+    /**
+     * Retrieves the lowest PHP version specified in <kbd>composer.json</var> of project.
+     *
+     * @return string
+     */
+    private function getLowestPhpVersion(): string
+    {
+        $composerJson = json_decode(file_get_contents(BP . '/composer.json'), true);
+        $phpVersion   = '7.0';
+
+        if (isset($composerJson['require']['php'])) {
+            $versions = explode('||', $composerJson['require']['php']);
+
+            //normalize version constraints
+            foreach ($versions as $key => $version) {
+                $version = ltrim($version, '^~');
+                $version = str_replace('*', '999', $version);
+
+                $versions[$key] = $version;
+            }
+
+            //sort versions
+            usort($versions, 'version_compare');
+
+            $lowestVersion = array_shift($versions);
+            $versionParts  = explode('.', $lowestVersion);
+            $phpVersion    = sprintf('%s.%s', $versionParts[0], $versionParts[1] ?? '0');
+        }
+
+        return $phpVersion;
+    }
+
+    /**
+     * Returns whether a full scan was requested.
+     *
+     * This can be set in the `phpunit.xml` used to run these test cases, by setting the constant
+     * `TESTCODESTYLE_IS_FULL_SCAN` to `1`, e.g.:
+     * ```xml
+     * <php>
+     *     <!-- TESTCODESTYLE_IS_FULL_SCAN - specify if full scan should be performed for test code style test -->
+     *     <const name="TESTCODESTYLE_IS_FULL_SCAN" value="0"/>
+     * </php>
+     * ```
+     *
+     * @return bool
+     */
+    private function isFullScan(): bool
+    {
+        return defined('TESTCODESTYLE_IS_FULL_SCAN') && TESTCODESTYLE_IS_FULL_SCAN === '1';
+    }
+
     public function testCodeStyle()
     {
-        $whiteList = defined('TESTCODESTYLE_IS_FULL_SCAN') && TESTCODESTYLE_IS_FULL_SCAN === '1'
-            ? $this->getFullWhitelist() : self::getWhitelist(['php', 'phtml']);
+        $whiteList = $this->isFullScan() ? $this->getFullWhitelist() : self::getWhitelist(['php', 'phtml']);
 
         $reportFile = self::$reportDir . '/phpcs_report.txt';
         $codeSniffer = new CodeSniffer('Magento', $reportFile, new Wrapper());
@@ -265,6 +316,34 @@ class LiveCodeTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue(
             $result,
             "PHP Copy/Paste Detector has found error(s):" . PHP_EOL . $output
+        );
+    }
+
+    /**
+     * Test for compatibility to lowest PHP version declared in <kbd>composer.json</kbd>.
+     */
+    public function testPhpCompatibility()
+    {
+        $targetVersion = $this->getLowestPhpVersion();
+        $reportFile    = self::$reportDir . '/phpcompatibility_report.txt';
+        $rulesetDir    = __DIR__ . '/_files/PHPCompatibilityMagento';
+
+        if (!file_exists($reportFile)) {
+            touch($reportFile);
+        }
+
+        $codeSniffer = new PhpCompatibility($rulesetDir, $reportFile, new Wrapper());
+        $codeSniffer->setTestVersion($targetVersion);
+
+        $result = $codeSniffer->run(
+            self::getWhitelist(['php', 'phtml'])
+        );
+        $report = file_get_contents($reportFile);
+
+        $this->assertEquals(
+            0,
+            $result,
+            'PHP Compatibility detected violation(s):' . PHP_EOL . $report
         );
     }
 }
