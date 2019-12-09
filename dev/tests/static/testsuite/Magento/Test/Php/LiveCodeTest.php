@@ -199,7 +199,7 @@ class LiveCodeTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Retrieves the lowest PHP version specified in <kbd>composer.json</var> of project.
+     * Retrieves the lowest PHP version specified in <var>composer.json</var> of project.
      *
      * @return string
      */
@@ -213,8 +213,9 @@ class LiveCodeTest extends \PHPUnit\Framework\TestCase
 
             //normalize version constraints
             foreach ($versions as $key => $version) {
-                $version = ltrim($version, '^~');
-                $version = str_replace('*', '999', $version);
+                $constraintCharacter = preg_replace('^[0-9.-]+$^', '', $version);
+                $version = ltrim($version, $constraintCharacter);
+                $version = str_replace('*', '0', $version);
 
                 $versions[$key] = $version;
             }
@@ -222,7 +223,7 @@ class LiveCodeTest extends \PHPUnit\Framework\TestCase
             //sort versions
             usort($versions, 'version_compare');
 
-            $lowestVersion = array_shift($versions);
+            $lowestVersion = reset($versions);
             $versionParts  = explode('.', $lowestVersion);
             $phpVersion    = sprintf('%s.%s', $versionParts[0], $versionParts[1] ?? '0');
         }
@@ -335,9 +336,7 @@ class LiveCodeTest extends \PHPUnit\Framework\TestCase
         $codeSniffer = new PhpCompatibility($rulesetDir, $reportFile, new Wrapper());
         $codeSniffer->setTestVersion($targetVersion);
 
-        $result = $codeSniffer->run(
-            self::getWhitelist(['php', 'phtml'])
-        );
+        $result = $codeSniffer->run(self::getWhitelist(['php', 'phtml']));
         $report = file_get_contents($reportFile);
 
         $this->assertEquals(
