@@ -213,9 +213,9 @@ class LiveCodeTest extends \PHPUnit\Framework\TestCase
 
             //normalize version constraints
             foreach ($versions as $key => $version) {
-                $constraintCharacter = preg_replace('^[0-9.-]+$^', '', $version);
+                $constraintCharacter = preg_replace('/[0-9.-]+$/', '', $version);
                 $version = ltrim($version, $constraintCharacter);
-                $version = str_replace('*', '0', $version);
+                $version = preg_replace(['/^\*/','/\.\*/'], ['1','.0'], $version);
 
                 $versions[$key] = $version;
             }
