@@ -8,7 +8,8 @@
 namespace Magento\Store\Controller\Store;
 
 use Magento\Framework\App\Action\Context;
-use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\App\Action\HttpGetActionInterface;
+use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\StoreRepositoryInterface;
 use Magento\Store\Api\StoreResolverInterface;
@@ -17,9 +18,9 @@ use Magento\Framework\Session\SidResolverInterface;
 use Magento\Framework\Session\Generic as Session;
 
 /**
- * Builds correct url to target store and performs redirect.
+ * Builds correct url to target store (group) and performs redirect.
  */
-class Redirect extends \Magento\Framework\App\Action\Action
+class Redirect extends \Magento\Framework\App\Action\Action implements HttpGetActionInterface, HttpPostActionInterface
 {
     /**
      * @var StoreRepositoryInterface
@@ -32,11 +33,6 @@ class Redirect extends \Magento\Framework\App\Action\Action
     private $storeResolver;
 
     /**
-     * @var SidResolverInterface
-     */
-    private $sidResolver;
-
-    /**
      * @var Session
      */
     private $session;
@@ -47,6 +43,7 @@ class Redirect extends \Magento\Framework\App\Action\Action
      * @param StoreResolverInterface $storeResolver
      * @param Session $session
      * @param SidResolverInterface $sidResolver
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function __construct(
         Context $context,
@@ -59,11 +56,11 @@ class Redirect extends \Magento\Framework\App\Action\Action
         $this->storeRepository = $storeRepository;
         $this->storeResolver = $storeResolver;
         $this->session = $session;
-        $this->sidResolver = $sidResolver;
     }
 
     /**
-     * @return ResponseInterface|\Magento\Framework\Controller\ResultInterface
+     * @inheritDoc
+     *
      * @throws NoSuchEntityException
      */
     public function execute()
@@ -96,12 +93,6 @@ class Redirect extends \Magento\Framework\App\Action\Action
                 StoreResolverInterface::PARAM_NAME => $targetStoreCode,
                 \Magento\Framework\App\ActionInterface::PARAM_NAME_URL_ENCODED => $encodedUrl,
             ];
-
-            if ($this->sidResolver->getUseSessionInUrl()) {
-                // allow customers to stay logged in during store switching
-                $sidName = $this->sidResolver->getSessionIdQueryParam($this->session);
-                $query[$sidName] = $this->session->getSessionId();
-            }
 
             $arguments = [
                 '_nosid' => true,
