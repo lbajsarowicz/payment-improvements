@@ -8,8 +8,6 @@
 namespace Magento\Store\Controller\Store;
 
 use Magento\Framework\App\Action\Context;
-use Magento\Framework\App\Action\HttpGetActionInterface;
-use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\StoreRepositoryInterface;
 use Magento\Store\Api\StoreResolverInterface;
@@ -20,7 +18,7 @@ use Magento\Framework\Session\Generic as Session;
 /**
  * Builds correct url to target store (group) and performs redirect.
  */
-class Redirect extends \Magento\Framework\App\Action\Action implements HttpGetActionInterface, HttpPostActionInterface
+class Redirect extends \Magento\Framework\App\Action\Action
 {
     /**
      * @var StoreRepositoryInterface
