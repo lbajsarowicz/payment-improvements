@@ -62,8 +62,11 @@ class Uploader extends \Magento\Backend\Block\Media\Uploader
     }
 
     /**
-     * Return current media type based on request or data
+     * Return current media type based on request or data.
      *
+     * Raw type that may not be allowed.
+     *
+     * @SuppressWarnings(PHPMD.RequestAwareBlockMethod)
      * @return string
      */
     protected function _getMediaType()
