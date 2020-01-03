@@ -181,7 +181,7 @@ class AbstractTemplateTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $filterTemplate->expects($this->once())
+        $filterTemplate->expects($this->never())
             ->method('setUseSessionInUrl')
             ->with(false)
             ->will($this->returnSelf());
@@ -257,7 +257,6 @@ class AbstractTemplateTest extends \PHPUnit\Framework\TestCase
         $filterTemplate = $this->getMockBuilder(\Magento\Email\Model\Template\Filter::class)
             ->setMethods(
                 [
-                'setUseSessionInUrl',
                 'setPlainTemplateMode',
                 'setIsChildTemplate',
                 'setDesignParams',
@@ -271,9 +270,7 @@ class AbstractTemplateTest extends \PHPUnit\Framework\TestCase
             )
             ->disableOriginalConstructor()
             ->getMock();
-        $filterTemplate->expects($this->once())
-            ->method('setUseSessionInUrl')
-            ->will($this->returnSelf());
+
         $filterTemplate->expects($this->once())
             ->method('setPlainTemplateMode')
             ->will($this->returnSelf());

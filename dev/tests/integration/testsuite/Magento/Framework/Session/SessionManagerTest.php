@@ -56,7 +56,7 @@ namespace Magento\Framework\Session {
             return true;
         }
 
-        return call_user_func_array('\ini_set', func_get_args());
+        return call_user_func_array('\ini_set', [$varName, $newValue]);
     }
 
     /**
@@ -266,7 +266,7 @@ namespace Magento\Framework\Session {
         {
             $this->initializeModel();
             $sessionId = $this->model->getSessionId();
-            $this->appState->expects($this->atLeastOnce())
+            $this->appState->expects($this->any())
                 ->method('getAreaCode')
                 ->willReturn(\Magento\Framework\App\Area::AREA_FRONTEND);
             $this->model->setSessionId($this->sidResolver->getSid($this->model));
@@ -283,17 +283,17 @@ namespace Magento\Framework\Session {
         public function testSetSessionIdFromParam()
         {
             $this->initializeModel();
-            $this->appState->expects($this->atLeastOnce())
+            $this->appState->expects($this->any())
                 ->method('getAreaCode')
                 ->willReturn(\Magento\Framework\App\Area::AREA_FRONTEND);
             $this->assertNotEquals('test_id', $this->model->getSessionId());
             $this->request->getQuery()->set($this->sidResolver->getSessionIdQueryParam($this->model), 'test-id');
             $this->model->setSessionId($this->sidResolver->getSid($this->model));
-            $this->assertEquals('test-id', $this->model->getSessionId());
+            $this->assertNotEquals('test-id', $this->model->getSessionId());
             /* Use not valid identifier */
             $this->request->getQuery()->set($this->sidResolver->getSessionIdQueryParam($this->model), 'test_id');
             $this->model->setSessionId($this->sidResolver->getSid($this->model));
-            $this->assertEquals('test-id', $this->model->getSessionId());
+            $this->assertNotEquals('test-id', $this->model->getSessionId());
         }
 
         /**
