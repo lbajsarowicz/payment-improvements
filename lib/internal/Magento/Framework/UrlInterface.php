@@ -53,6 +53,7 @@ interface UrlInterface
      *
      * @return bool
      * @SuppressWarnings(PHPMD.BooleanGetMethodName)
+     * @deprecated SID query parameter is not used in URLs anymore.
      */
     public function getUseSession();
 
@@ -84,6 +85,7 @@ interface UrlInterface
      * Add session param
      *
      * @return \Magento\Framework\UrlInterface
+     * @deprecated SID query parameter is not used in URLs anymore.
      */
     public function addSessionParam();
 

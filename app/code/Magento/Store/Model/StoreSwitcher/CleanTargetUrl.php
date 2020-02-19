@@ -51,12 +51,11 @@ class CleanTargetUrl implements StoreSwitcherInterface
      * @param StoreInterface $targetStore store where to go to
      * @param string $redirectUrl original url requested for redirect after switching
      * @return string redirect url
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function switch(StoreInterface $fromStore, StoreInterface $targetStore, string $redirectUrl): string
     {
         $targetUrl = $redirectUrl;
-        $sidName = $this->sidResolver->getSessionIdQueryParam($this->session);
-        $targetUrl = $this->urlHelper->removeRequestParam($targetUrl, $sidName);
         $targetUrl = $this->urlHelper->removeRequestParam($targetUrl, '___from_store');
         $targetUrl = $this->urlHelper->removeRequestParam($targetUrl, StoreResolverInterface::PARAM_NAME);
 

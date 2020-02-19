@@ -23,6 +23,7 @@ interface SidResolverInterface
      *
      * @param \Magento\Framework\Session\SessionManagerInterface $session
      * @return string|null
+     * @deprecated SID query parameter is not used in URLs anymore.
      */
     public function getSid(\Magento\Framework\Session\SessionManagerInterface $session);
 
@@ -31,6 +32,7 @@ interface SidResolverInterface
      *
      * @param \Magento\Framework\Session\SessionManagerInterface $session
      * @return string
+     * @deprecated SID query parameter is not used in URLs anymore.
      */
     public function getSessionIdQueryParam(\Magento\Framework\Session\SessionManagerInterface $session);
 
@@ -39,6 +41,7 @@ interface SidResolverInterface
      *
      * @param bool $var
      * @return $this
+     * @deprecated SID query parameter is not used in URLs anymore.
      */
     public function setUseSessionVar($var);
 
@@ -47,6 +50,7 @@ interface SidResolverInterface
      *
      * @return bool
      * @SuppressWarnings(PHPMD.BooleanGetMethodName)
+     * @deprecated SID query parameter is not used in URLs anymore.
      */
     public function getUseSessionVar();
 
@@ -55,6 +59,7 @@ interface SidResolverInterface
      *
      * @param bool $flag
      * @return $this
+     * @deprecated SID query parameter is not used in URLs anymore.
      */
     public function setUseSessionInUrl($flag = true);
 
@@ -63,6 +68,7 @@ interface SidResolverInterface
      *
      * @return bool
      * @SuppressWarnings(PHPMD.BooleanGetMethodName)
+     * @deprecated SID query parameter is not used in URLs anymore.
      */
     public function getUseSessionInUrl();
 }

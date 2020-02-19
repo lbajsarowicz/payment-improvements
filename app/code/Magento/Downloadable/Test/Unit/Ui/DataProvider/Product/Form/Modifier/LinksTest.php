@@ -170,9 +170,6 @@ class LinksTest extends \PHPUnit\Framework\TestCase
         $this->shareableMock->expects($this->once())
             ->method('toOptionArray');
         $this->urlBuilderMock->expects($this->exactly(2))
-            ->method('addSessionParam')
-            ->willReturnSelf();
-        $this->urlBuilderMock->expects($this->exactly(2))
             ->method('getUrl');
 
         $currencyMock = $this->createMock(\Magento\Directory\Model\Currency::class);
