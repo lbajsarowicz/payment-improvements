@@ -101,10 +101,6 @@ class Url extends \Magento\Framework\DataObject
      */
     public function getProductUrl($product, $useSid = null)
     {
-        if ($useSid === null) {
-            $useSid = $this->sidResolver->getUseSessionInUrl();
-        }
-
         $params = [];
         if (!$useSid) {
             $params['_nosid'] = true;

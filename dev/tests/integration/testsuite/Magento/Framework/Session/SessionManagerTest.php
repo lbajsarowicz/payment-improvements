@@ -279,23 +279,6 @@ namespace Magento\Framework\Session {
 
         /**
          * @return void
-         * @magentoConfigFixture current_store web/session/use_frontend_sid 1
-         */
-        public function testSetSessionIdFromParam()
-        {
-            $this->initializeModel();
-            $this->appState->expects($this->any())
-                ->method('getAreaCode')
-                ->willReturn(\Magento\Framework\App\Area::AREA_FRONTEND);
-            $currentId = $this->model->getSessionId();
-            $this->assertNotEquals('test_id', $this->model->getSessionId());
-            $this->request->getQuery()->set(SidResolverInterface::SESSION_ID_QUERY_PARAM, 'test-id');
-            $this->model->setSessionId($this->sidResolver->getSid($this->model));
-            $this->assertEquals($currentId, $this->model->getSessionId());
-        }
-
-        /**
-         * @return void
          */
         public function testGetSessionIdForHost()
         {

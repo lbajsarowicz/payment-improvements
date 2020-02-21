@@ -14,8 +14,6 @@ namespace Magento\Catalog\Model\Template;
 
 /**
  * Work with catalog(store, website) urls
- *
- * @package Magento\Catalog\Model\Template
  */
 class Filter extends \Magento\Framework\Filter\Template
 {
@@ -30,6 +28,7 @@ class Filter extends \Magento\Framework\Filter\Template
      * Whether to allow SID in store directive: NO
      *
      * @var bool
+     * @deprecated SID query parameter is not used in URLs anymore.
      */
     protected $_useSessionInUrl = false;
 
@@ -80,10 +79,13 @@ class Filter extends \Magento\Framework\Filter\Template
      *
      * @param bool $flag
      * @return \Magento\Email\Model\Template\Filter
+     * @deprecated SID query parameter is not used in URLs anymore.
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function setUseSessionInUrl($flag)
     {
-        $this->_useSessionInUrl = $flag;
+        trigger_error('Session ID is not used as URL parameter anymore', E_USER_DEPRECATED);
+
         return $this;
     }
 

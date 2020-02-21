@@ -142,9 +142,6 @@ class SamplesTest extends \PHPUnit\Framework\TestCase
         $this->typeUploadMock->expects($this->once())
             ->method('toOptionArray');
         $this->urlBuilderMock->expects($this->once())
-            ->method('addSessionParam')
-            ->willReturnSelf();
-        $this->urlBuilderMock->expects($this->once())
             ->method('getUrl');
         $this->arrayManagerMock->expects($this->exactly(6))
             ->method('set')

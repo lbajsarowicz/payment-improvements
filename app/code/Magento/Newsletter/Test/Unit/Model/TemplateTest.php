@@ -254,7 +254,6 @@ class TemplateTest extends \PHPUnit\Framework\TestCase
         $filterTemplate = $this->getMockBuilder(\Magento\Newsletter\Model\Template\Filter::class)
             ->setMethods(
                 [
-                    'setUseSessionInUrl',
                     'setPlainTemplateMode',
                     'setIsChildTemplate',
                     'setDesignParams',
@@ -268,10 +267,7 @@ class TemplateTest extends \PHPUnit\Framework\TestCase
             )
             ->disableOriginalConstructor()
             ->getMock();
-        $filterTemplate->expects($this->once())
-            ->method('setUseSessionInUrl')
-            ->with(false)
-            ->will($this->returnSelf());
+
         $filterTemplate->expects($this->once())
             ->method('setPlainTemplateMode')
             ->with($templateType === TemplateTypesInterface::TYPE_TEXT)
