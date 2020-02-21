@@ -141,9 +141,6 @@ class SamplesTest extends \PHPUnit\Framework\TestCase
             ->method('isSingleStoreMode');
         $this->typeUploadMock->expects($this->once())
             ->method('toOptionArray');
-        $this->urlBuilderMock->expects($this->never())
-            ->method('addSessionParam')
-            ->willReturnSelf();
         $this->urlBuilderMock->expects($this->once())
             ->method('getUrl');
         $this->arrayManagerMock->expects($this->exactly(6))

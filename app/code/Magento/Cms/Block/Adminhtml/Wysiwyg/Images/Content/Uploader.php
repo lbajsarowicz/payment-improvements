@@ -68,6 +68,7 @@ class Uploader extends \Magento\Backend\Block\Media\Uploader
      *
      * @SuppressWarnings(PHPMD.RequestAwareBlockMethod)
      * @return string
+     * @SuppressWarnings(PHPMD.RequestAwareBlockMethod)
      */
     protected function _getMediaType()
     {
