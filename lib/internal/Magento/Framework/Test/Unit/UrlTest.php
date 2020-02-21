@@ -540,10 +540,10 @@ class UrlTest extends \PHPUnit\Framework\TestCase
             'queryParamsResolver' => $this->queryParamsResolverMock,
         ]);
 
-        $this->sidResolverMock->expects($this->once())->method('getSessionIdQueryParam')->with($this->sessionMock)
+        $this->sidResolverMock->expects($this->never())->method('getSessionIdQueryParam')->with($this->sessionMock)
             ->will($this->returnValue('sid'));
-        $this->sessionMock->expects($this->once())->method('getSessionId')->will($this->returnValue('session-id'));
-        $this->queryParamsResolverMock->expects($this->once())->method('setQueryParam')->with('sid', 'session-id');
+        $this->sessionMock->expects($this->never())->method('getSessionId')->will($this->returnValue('session-id'));
+        $this->queryParamsResolverMock->expects($this->never())->method('setQueryParam')->with('sid', 'session-id');
 
         $model->addSessionParam();
     }
@@ -681,10 +681,10 @@ class UrlTest extends \PHPUnit\Framework\TestCase
             ]
         );
 
-        $requestMock->expects($this->once())
+        $requestMock->expects($this->any())
             ->method('getHttpHost')
             ->will($this->returnValue('localhost'));
-        $this->scopeMock->expects($this->once())
+        $this->scopeMock->expects($this->any())
             ->method('getBaseUrl')
             ->will($this->returnValue('http://localhost'));
         $this->scopeResolverMock->expects($this->any())
@@ -709,20 +709,20 @@ class UrlTest extends \PHPUnit\Framework\TestCase
             ]
         );
 
-        $requestMock->expects($this->once())->method('getHttpHost')->will($this->returnValue('localhost'));
-        $this->scopeMock->expects($this->once())
+        $requestMock->expects($this->never())->method('getHttpHost')->will($this->returnValue('localhost'));
+        $this->scopeMock->expects($this->any())
             ->method('getBaseUrl')
             ->will($this->returnValue('http://example.com'));
         $this->scopeResolverMock->expects($this->any())
             ->method('getScope')
             ->will($this->returnValue($this->scopeMock));
-        $this->sidResolverMock->expects($this->once())->method('getSessionIdQueryParam')
+        $this->sidResolverMock->expects($this->never())->method('getSessionIdQueryParam')
             ->will($this->returnValue('SID'));
-        $this->sessionMock->expects($this->once())->method('getSessionId')
+        $this->sessionMock->expects($this->never())->method('getSessionId')
             ->will($this->returnValue('session-id'));
 
         $this->assertEquals(
-            '<a href="http://example.com/?SID=session-id">www.example.com</a>',
+            '<a href="http://example.com/">www.example.com</a>',
             $model->sessionUrlVar('<a href="http://example.com/?___SID=U">www.example.com</a>')
         );
     }

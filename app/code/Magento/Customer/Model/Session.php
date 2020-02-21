@@ -510,8 +510,6 @@ class Session extends \Magento\Framework\Session\SessionManager
      */
     protected function _setAuthUrl($key, $url)
     {
-        $url = $this->_coreUrl->removeRequestParam($url, $this->sidResolver->getSessionIdQueryParam($this));
-        // Add correct session ID to URL if needed
         $url = $this->_createUrl()->getRebuiltUrl($url);
         return $this->storage->setData($key, $url);
     }

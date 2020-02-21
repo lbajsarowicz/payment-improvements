@@ -11,6 +11,7 @@ use Magento\Framework\App\State;
 
 /**
  * Resolves SID by processing request parameters.
+ *
  * @deprecated 2.2.10 SIDs in URLs are no longer used
  */
 class SidResolver implements SidResolverInterface
@@ -27,11 +28,13 @@ class SidResolver implements SidResolverInterface
 
     /**
      * @var \Magento\Framework\UrlInterface
+     * @deprecated Not used anymore.
      */
     protected $urlBuilder;
 
     /**
      * @var \Magento\Framework\App\RequestInterface
+     * @deprecated Not used anymore.
      */
     protected $request;
 
@@ -61,17 +64,13 @@ class SidResolver implements SidResolverInterface
     protected $_scopeType;
 
     /**
-     * @var State
-     */
-    private $appState;
-
-    /**
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Magento\Framework\UrlInterface $urlBuilder
      * @param \Magento\Framework\App\RequestInterface $request
      * @param string $scopeType
      * @param array $sidNameMap
      * @param State|null $appState
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function __construct(
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
@@ -86,14 +85,12 @@ class SidResolver implements SidResolverInterface
         $this->request = $request;
         $this->sidNameMap = $sidNameMap;
         $this->_scopeType = $scopeType;
-        $this->appState = $appState ?: \Magento\Framework\App\ObjectManager::getInstance()->get(State::class);
     }
 
     /**
      * Get Sid
      *
      * @param SessionManagerInterface $session
-     *
      * @return string|null
      * @throws \Magento\Framework\Exception\LocalizedException
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)

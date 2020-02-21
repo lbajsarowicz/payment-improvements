@@ -8,16 +8,14 @@
 namespace Magento\Store\Controller\Store;
 
 use Magento\Framework\App\Action\Context;
-use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\StoreRepositoryInterface;
 use Magento\Store\Api\StoreResolverInterface;
 use Magento\Store\Model\StoreResolver;
 use Magento\Framework\Session\SidResolverInterface;
-use Magento\Framework\Session\Generic as Session;
 
 /**
- * Builds correct url to target store and performs redirect.
+ * Builds correct url to target store (group) and performs redirect.
  */
 class Redirect extends \Magento\Framework\App\Action\Action
 {
@@ -32,34 +30,23 @@ class Redirect extends \Magento\Framework\App\Action\Action
     private $storeResolver;
 
     /**
-     * @var SidResolverInterface
-     */
-    private $sidResolver;
-
-    /**
-     * @var Session
-     */
-    private $session;
-
-    /**
      * @param Context $context
      * @param StoreRepositoryInterface $storeRepository
      * @param StoreResolverInterface $storeResolver
-     * @param Session $session
+     * @param \Magento\Framework\Session\Generic $session
      * @param SidResolverInterface $sidResolver
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function __construct(
         Context $context,
         StoreRepositoryInterface $storeRepository,
         StoreResolverInterface $storeResolver,
-        Session $session,
+        \Magento\Framework\Session\Generic $session,
         SidResolverInterface $sidResolver
     ) {
         parent::__construct($context);
         $this->storeRepository = $storeRepository;
         $this->storeResolver = $storeResolver;
-        $this->session = $session;
-        $this->sidResolver = $sidResolver;
     }
 
     /**

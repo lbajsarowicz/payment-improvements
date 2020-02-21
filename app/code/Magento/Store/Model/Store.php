@@ -276,6 +276,7 @@ class Store extends AbstractExtensibleModel implements
 
     /**
      * @var \Magento\Framework\Session\SidResolverInterface
+     * @deprecated Not used anymore.
      */
     protected $_sidResolver;
 
@@ -1150,7 +1151,6 @@ class Store extends AbstractExtensibleModel implements
      */
     public function getCurrentUrl($fromStore = true)
     {
-        $sidQueryParam = $this->_sidResolver->getSessionIdQueryParam($this->_getSession());
         /** @var string $requestString Request path without query parameters */
         $requestString = $this->_url->escape(
             preg_replace(
@@ -1174,12 +1174,6 @@ class Store extends AbstractExtensibleModel implements
         }
 
         $currQuery = $this->_request->getQueryValue();
-        if (isset($currQuery[$sidQueryParam])
-            && !empty($currQuery[$sidQueryParam])
-            && $this->_getSession()->getSessionIdForHost($storeUrl) != $currQuery[$sidQueryParam]
-        ) {
-            unset($currQuery[$sidQueryParam]);
-        }
 
         foreach ($currQuery as $key => $value) {
             $storeParsedQuery[$key] = $value;
