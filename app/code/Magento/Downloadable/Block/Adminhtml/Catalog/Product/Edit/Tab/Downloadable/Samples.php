@@ -9,6 +9,9 @@ namespace Magento\Downloadable\Block\Adminhtml\Catalog\Product\Edit\Tab\Download
  * Adminhtml catalog product downloadable items tab links section
  *
  * @author      Magento Core Team <core@magentocommerce.com>
+ *
+ * @deprecated because of new class which adds grids samples
+ * @see \Magento\Downloadable\Ui\DataProvider\Product\Form\Modifier\Samples
  */
 class Samples extends \Magento\Backend\Block\Widget
 {

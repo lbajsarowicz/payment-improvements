@@ -265,7 +265,9 @@ namespace Magento\Framework\Session {
         public function testSetSessionId()
         {
             $this->initializeModel();
+            $sessionId = $this->model->getSessionId();
             $this->assertNotEmpty($this->model->getSessionId());
+
             $this->appState->expects($this->any())
                 ->method('getAreaCode')
                 ->willReturn(\Magento\Framework\App\Area::AREA_FRONTEND);

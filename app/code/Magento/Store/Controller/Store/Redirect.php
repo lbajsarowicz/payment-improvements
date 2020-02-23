@@ -50,8 +50,9 @@ class Redirect extends \Magento\Framework\App\Action\Action
     }
 
     /**
-     * @inheritDoc
+     * Builds Redirect Url
      *
+     * @return ResponseInterface|\Magento\Framework\Controller\ResultInterface
      * @throws NoSuchEntityException
      */
     public function execute()

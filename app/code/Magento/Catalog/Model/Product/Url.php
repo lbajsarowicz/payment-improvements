@@ -105,7 +105,6 @@ class Url extends \Magento\Framework\DataObject
         if (!$useSid) {
             $params['_nosid'] = true;
         }
-
         return $this->getUrl($product, $params);
     }
 

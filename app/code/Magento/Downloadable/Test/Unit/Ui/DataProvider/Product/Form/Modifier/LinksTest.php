@@ -17,7 +17,7 @@ use Magento\Framework\UrlInterface;
 use Magento\Framework\Stdlib\ArrayManager;
 
 /**
- * Class LinksTest
+ * Test for class Magento\Downloadable\Ui\DataProvider\Product\Form\Modifier\Links
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class LinksTest extends \PHPUnit\Framework\TestCase
@@ -171,7 +171,6 @@ class LinksTest extends \PHPUnit\Framework\TestCase
             ->method('toOptionArray');
         $this->urlBuilderMock->expects($this->exactly(2))
             ->method('getUrl');
-
         $currencyMock = $this->createMock(\Magento\Directory\Model\Currency::class);
         $currencyMock->expects($this->once())
             ->method('getCurrencySymbol');
